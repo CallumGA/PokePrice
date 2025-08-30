@@ -13,6 +13,7 @@ MODEL_DIR = "model"
 DATA_DIR = "data"
 SCALER_PATH = os.path.join(DATA_DIR, "scaler.pkl")
 DATA_PATH = os.path.join(DATA_DIR, "pokemon_final_with_labels.csv")
+TARGET_COLUMN = 'price_will_rise_30_in_6m'
 
 
 def load_model_and_config(model_dir: str) -> Tuple[torch.nn.Module, List[str]]:
@@ -77,16 +78,19 @@ def predict_price_trend(card_display_name: str) -> str:
     prediction_text = "**RISE**" if predicted_class else "**NOT RISE**"
     confidence = probability if predicted_class else 1 - probability
 
-    target_col = 'price_will_rise_30_in_6m' # NOTE: Assumed target column name. Change if yours is different.
+    # Construct the TCGPlayer link
+    tcgplayer_link = f"https://www.tcgplayer.com/product/{tcgplayer_id}?Language=English"
+
     true_label_text = ""
-    if target_col in card_sample and pd.notna(card_sample[target_col]):
-        true_label = bool(card_sample[target_col])
+    if TARGET_COLUMN in card_sample and pd.notna(card_sample[TARGET_COLUMN]):
+        true_label = bool(card_sample[TARGET_COLUMN])
         true_label_text = f"\n- **Actual Result in Dataset:** The price did **{'RISE' if true_label else 'NOT RISE'}**."
 
     output = f"""
     ## 🔮 Prediction Report for {card_sample['name']}
     - **Prediction:** The model predicts the card's price will {prediction_text} by 30% in the next 6 months.
     - **Confidence:** {confidence:.2%}
+    - **View on TCGPlayer:** [Check Current Price]({tcgplayer_link})
     {true_label_text}
     """
     return output
