@@ -1,17 +1,21 @@
 ---
-title: PokePrice
-emoji: 🔮
-colorFrom: blue
-colorTo: gray
+title: Pokémon Price Predictor
+emoji: 🃏
+colorFrom: indigo
+colorTo: blue
 sdk: gradio
-sdk_version: 4.32.0
+sdk_version: 4.38.1
 app_file: app.py
 pinned: false
 license: mit
-short_description: Predicts Pokémon card price trends with a neural network.
+tags:
+  - pytorch
+  - machine-learning
+  - pokemon
+  - price-prediction
 ---
 
-## PricePoke: Pokémon Card Price Trend Predictor
+## PokePrice: Pokémon Card Price Trend Predictor
 
 This application uses a PyTorch-based neural network to predict whether the market price of a specific Pokémon card will rise by 30% or more over the next six months.
 
