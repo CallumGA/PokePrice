@@ -40,7 +40,6 @@ def perform_prediction(model: torch.nn.Module, scaler, input_features: pd.Series
 
     return predicted_class, probability
 
-# --- Asset Loading ---
 try:
     model, feature_columns = load_model_and_config(MODEL_DIR)
     scaler = joblib.load(SCALER_PATH)
@@ -59,18 +58,15 @@ def predict_price_trend(card_identifier: str) -> str:
     if not card_identifier or not card_identifier.strip().isdigit():
         return "## Input Error\nPlease enter a valid, numeric TCGPlayer ID."
 
-    # --- Find Card Logic ---
     card_id = int(card_identifier.strip())
     card_data = full_data[full_data['tcgplayer_id'] == card_id]
 
     if card_data.empty:
         return f"## Card Not Found\nCould not find a card with TCGPlayer ID '{card_id}'. Please check the ID and try again."
 
-    # Since tcgplayer_id is unique, we can safely take the first (and only) row.
     card_sample = card_data.iloc[0]
     sample_features = card_sample[feature_columns]
 
-    # --- Prediction Logic ---
     predicted_class, probability = perform_prediction(model, scaler, sample_features)
 
     prediction_text = "**RISE**" if predicted_class else "**NOT RISE**"
@@ -78,14 +74,13 @@ def predict_price_trend(card_identifier: str) -> str:
     tcgplayer_id = card_sample['tcgplayer_id']
     tcgplayer_link = f"https://www.tcgplayer.com/product/{tcgplayer_id}?Language=English"
 
-    # --- Output Formatting ---
     true_label_text = ""
     try:
         if TARGET_COLUMN in card_sample and pd.notna(card_sample[TARGET_COLUMN]):
             true_label = bool(card_sample[TARGET_COLUMN])
             true_label_text = f"\n- **Actual Result in Dataset:** The price did **{'RISE' if true_label else 'NOT RISE'}**."
     except (KeyError, TypeError):
-        pass # If target column is missing or value is invalid, just skip this part.
+        pass
 
     output = f"""
     ## 🔮 Prediction Report for {card_sample['name']}
@@ -97,7 +92,6 @@ def predict_price_trend(card_identifier: str) -> str:
     return output
 
 
-# --- Gradio UI ---
 with gr.Blocks(theme=gr.themes.Soft(), title="PricePoke Predictor") as demo:
     gr.Markdown(
         """
