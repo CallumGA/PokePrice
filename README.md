@@ -10,9 +10,16 @@ pinned: false
 license: mit
 tags:
   - pytorch
+  - scikit-learn
+  - gradio
   - machine-learning
-  - pokemon
+  - tabular-classification
   - price-prediction
+  - finance
+  - pokemon
+  - pokemon-cards
+  - tcg
+  - collectibles
 ---
 
 ## PokePrice: Pokémon Card Price Trend Predictor
@@ -20,10 +27,10 @@ tags:
 This application uses a PyTorch-based neural network to predict whether the market price of a specific Pokémon card will rise by 30% or more over the next six months.
 
 ### How It Works
-1.  **Select a Card:** Choose a Pokémon card from the dropdown menu. The list is populated from a dataset containing historical price information.
+1.  **Enter a Card ID:** Input the numeric TCGPlayer ID for a specific Pokémon card. You can find this ID in the URL of the card's page on the TCGPlayer website (e.g., `tcgplayer.com/product/84198/...`).
 2.  **Get Prediction:** The model analyzes various features of the selected card, such as its rarity, type, and historical price data, to make a prediction.
 3.  **View Results:** The application displays:
-    *   The prediction (whether the price is expected to **RISE** or **NOT RISE**).
+    *   The card's name and the prediction (whether the price is expected to **RISE** or **NOT RISE**).
     *   The model's confidence level in the prediction.
     *   A direct link to view the card on TCGPlayer.com.
     *   The actual historical outcome if it exists in the dataset, for comparison.

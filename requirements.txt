@@ -4,3 +4,4 @@ numpy
 scikit-learn
 safetensors
 gradio
+tabulate
